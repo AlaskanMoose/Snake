@@ -1,26 +1,17 @@
-var AM = new AssetManager();
+window.onload = function () {
+	// Load game world. This is the top layer
+	var canvas = document.getElementById("gameWorld");
+	var gameCtx = canvas.getContext("2d");
 
+	var gameEngine = new GameEngine();
 
-AM.queueDownload("./img/coolbackground.png");
+	gameCtx.canvas.focus();
 
+	// Send canvas' to game engine
+	gameEngine.init(
+		gameCtx,
+	);
+	gameEngine.start();
 
-AM.downloadAll(function () {
-	window.onload = function () {
-		// Load game world. This is the top layer
-		var canvas = document.getElementById("gameWorld");
-		var gameCtx = canvas.getContext("2d");
-
-		var gameEngine = new GameEngine();
-
-		gameCtx.canvas.focus();
-
-		// Send canvas' to game engine
-		gameEngine.init(
-			gameCtx,
-			AM
-		);
-		gameEngine.start();
-
-		console.log("All Done!");
-	};
-});
+	console.log("All Done!");
+};

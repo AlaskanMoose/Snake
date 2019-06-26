@@ -11,7 +11,6 @@ class Hitbox {
 		this.boundY = boundY;
 		this.width = width;
 		this.height = height;
-		this.type = type;
 	}
 
 	// If another hitbox has collided, return true, else false
@@ -43,9 +42,14 @@ class Hitbox {
 
 	// draws the hitbox on canvas
 	drawHitBox() {
-		// this.ctx.beginPath();
-		// this.ctx.strokeStyle = "white";
-		// this.ctx.rect(this.boundX, this.boundY, this.width, this.height);
-		// this.ctx.stroke();
+		this.ctx.beginPath();
+		this.ctx.strokeStyle = "black";
+		this.ctx.rect(
+			this.boundX,
+			this.boundY,
+			this.width,
+			this.height
+		);
+		this.ctx.stroke();
 	}
 }

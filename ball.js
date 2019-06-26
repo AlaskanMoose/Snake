@@ -1,9 +1,9 @@
 class Ball extends Entity {
 	constructor(game, startX, startY) {
 		super(game, startX, startY);
-		this.frameWidth = 50;
-		this.frameHeight = 50;
-		this.size = 50;
+		this.frameWidth = 20;
+		this.frameHeight = 20;
+		this.size = 20;
 	}
 	draw(ctx) {
 		this.ctx.beginPath();
@@ -31,4 +31,5 @@ class Ball extends Entity {
 		this.hitB.boundX = this.boundX + 15;
 		this.hitB.boundY = this.boundY;
 	}
+
 }

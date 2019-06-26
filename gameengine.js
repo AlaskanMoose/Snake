@@ -12,11 +12,11 @@ class GameEngine {
 	 */
 	constructor() {
 		this.entities = [];
-		this.enemies = [];
 		this.ctx = null;
 		this.canvasWidth = null;
 		this.canvasHeight = null;
 		this.drawAroundHitBox = false;
+		this.size = 20;
 	}
 
 	/**
@@ -30,7 +30,6 @@ class GameEngine {
 		assetManager
 	) {
 		// initialize game world features. Context, timer, canvas width and height, etc.
-		//this.overlayCtx = overlayProjectionContext;
 		this.ctx = gameCtx;
 		this.AM = assetManager;
 		this.canvasWidth = this.ctx.canvas.width;
@@ -38,12 +37,11 @@ class GameEngine {
 		this.timer = new Timer();
 
 		// Initialize snek
-		this.snek = new Snek(this, 0, 0);
+		this.snek = new Snek(this, 100, 100);
 		this.addEntity(this.snek);
 
-		// Initialize balls
-		this.ball = new Ball(this, 100, 100);
-		this.addEntity(this.ball);
+		// Initialize ball
+		this.addEntity(this.returnRandomBall());
 
 		// Set listeners
 		this.initializeEventListeners();
@@ -92,6 +90,13 @@ class GameEngine {
 
 	/** Handles updating the entities world state. */
 	update() {
+		if (this.snek.gameOver == true) {
+			this.entities = [];
+			this.snek = new Snek(this, 100, 100);
+			this.addEntity(this.snek);
+			this.addEntity(this.returnRandomBall());
+			this.facingDirection = 10;
+		}
 		let entitiesCount = this.entities.length;
 
 		for (let i = 0; i < entitiesCount; i++) {
@@ -137,19 +142,23 @@ class GameEngine {
 			e => {
 				switch (e.key) {
 					case "ArrowRight":
-						that.moving = true;
+						if (that.facingDirection == 1 && that.snek.trail.length > 0)
+							that.snek.gameOver = true;
 						that.facingDirection = 0;
 						break;
 					case "ArrowLeft":
-						that.moving = true;
+						if (that.facingDirection == 0 && that.snek.trail.length > 0)
+							that.snek.gameOver = true;
 						that.facingDirection = 1;
 						break;
 					case "ArrowDown":
-						that.moving = true;
+						if (that.facingDirection == 3 && that.snek.trail.length > 0)
+							that.snek.gameOver = true;
 						that.facingDirection = 2;
 						break;
 					case "ArrowUp":
-						that.moving = true;
+						if (that.facingDirection == 2 && that.snek.trail.length > 0)
+							that.snek.gameOver = true;
 						that.facingDirection = 3;
 						break;
 
@@ -185,6 +194,16 @@ class GameEngine {
 			},
 			false
 		);
+	}
+	returnRandomBall() {
+		let cols = Math.floor((this.canvasWidth - 50) / this.size);
+		let rows = Math.floor((this.canvasHeight - 50) / this.size);
+		let randomX = this.getRandomInt(cols) * this.size;
+		let randomY = this.getRandomInt(rows) * this.size;
+		return new Ball(this, randomX, randomY);
+	}
+	getRandomInt(max) {
+		return Math.floor(Math.random() * Math.floor(max));
 	}
 }
 
